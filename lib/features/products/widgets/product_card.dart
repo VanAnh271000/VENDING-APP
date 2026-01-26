@@ -16,20 +16,12 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      // borderRadius: BorderRadius.circular(12),
       child: SizedBox(
         height: itemHeight,
         child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
           child: Row(
             children: [
@@ -57,7 +49,7 @@ class ProductCard extends StatelessWidget {
   Widget _buildInfo() {
     return Expanded(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // 👈 căn giữa dọc
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -132,8 +124,8 @@ class ProductCard extends StatelessWidget {
           formatCurrency(qty*product.price),
           style: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.blueAccent,
+            // fontWeight: FontWeight.bold,
+            color: Colors.grey,
           ),
         ),
       ],

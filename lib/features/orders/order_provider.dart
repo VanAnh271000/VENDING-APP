@@ -27,6 +27,11 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeAll(Product product) {
+    _items.remove(product.id);
+    notifyListeners();
+  }
+
   int getQuantity(int productId) =>
       _items[productId]?.quantity ?? 0;
 

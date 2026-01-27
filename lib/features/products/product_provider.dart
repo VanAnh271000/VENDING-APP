@@ -3,12 +3,13 @@ import 'product_model.dart';
 import 'product_service.dart';
 
 class ProductProvider extends ChangeNotifier {
-  final ProductService _service = ProductService();
+  final ProductService _service;
+  ProductProvider(this._service);
 
   List<Product> products = [];
   bool isLoading = false;
 
-  Future<void> loadProducts() async {
+  Future<void> load() async {
     isLoading = true;
     notifyListeners();
 

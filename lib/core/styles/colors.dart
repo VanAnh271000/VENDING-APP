@@ -8,7 +8,7 @@ class AppColors {
   static const Color secondary = Color(0xFFFFA000);
 
   // Background
-  static const Color background = Color(0xFFF5F7FA);
+  static const Color background = Colors.white;
   static const Color card = Colors.white;
 
   //Icon

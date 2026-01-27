@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vending/features/orders/widgets/order_bottom_bar.dart';
+import 'package:vending/features/products/widgets/product_app_bar.dart';
 import 'package:vending/features/products/widgets/product_card.dart';
+import '../../core/styles/colors.dart';
 import 'product_provider.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -24,19 +27,15 @@ class _ProductScreenState extends State<ProductScreen> {
     final provider = context.watch<ProductProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Danh sách hàng hóa'),
-        centerTitle: true,
-      ),
+      appBar: ProductAppBar(),
       body: provider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.separated(
-              // padding: const EdgeInsets.all(16),
               itemCount: provider.products.length,
               separatorBuilder: (_, __) => const Divider(
                 height: 1,
                 thickness: 1,
-                color: Color(0xFFF1F0F0),
+                color: AppColors.divider,
               ),
               itemBuilder: (context, index) {
                 final product = provider.products[index];
@@ -48,6 +47,16 @@ class _ProductScreenState extends State<ProductScreen> {
                 );
               },
             ),
+      bottomNavigationBar: OrderBottomBar(
+        onCheckout: () {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (_) => const CheckoutScreen(),
+          //   ),
+          // );
+        },
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vending/core/styles/colors.dart';
 import '../../../core/utils/formatter.dart';
 import '../../orders/order_provider.dart';
 import '../product_model.dart';
@@ -7,10 +8,9 @@ import 'package:provider/provider.dart';
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback? onTap;
-
   const ProductCard({super.key, required this.product, this.onTap});
 
-  static const double itemHeight = 120;
+  static const double itemHeight = 100;
 
   @override
   Widget build(BuildContext context) {
@@ -56,21 +56,21 @@ class ProductCard extends StatelessWidget {
             product.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.blueAccent),
+            style: TextStyle(color: AppColors.textPrimary),
           ),
           const SizedBox(height: 4),
           Text(
             product.description,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(color: AppColors.textSecondary),
           ),
           const SizedBox(height: 4),
           Text(
             formatCurrency(product.price),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(color: AppColors.textSecondary),
           ),
         ],
       ),
@@ -84,9 +84,9 @@ class ProductCard extends StatelessWidget {
     if (qty == 0) {
       return IconButton(
         icon: const Icon(Icons.add_circle),
-        color: Colors.blueAccent,
+        color: AppColors.iconPrimary,
         onPressed: () {
-          context.read<OrderProvider>().add(product.id);
+          context.read<OrderProvider>().add(product.id, product.price);
         },
       );
     }
@@ -98,7 +98,7 @@ class ProductCard extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.remove_circle_outline),
-              color: Colors.blueAccent,
+              color: AppColors.iconPrimary,
               onPressed: () {
                 context.read<OrderProvider>().remove(product.id);
               },
@@ -108,14 +108,14 @@ class ProductCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
+                color: AppColors.iconPrimary,
               ),
             ),
             IconButton(
               icon: const Icon(Icons.add_circle_outline),
-              color: Colors.blueAccent,
+              color: AppColors.iconPrimary,
               onPressed: () {
-                context.read<OrderProvider>().add(product.id);
+                context.read<OrderProvider>().add(product.id, product.price);
               },
             ),
           ],
@@ -124,7 +124,6 @@ class ProductCard extends StatelessWidget {
           formatCurrency(qty*product.price),
           style: const TextStyle(
             fontSize: 16,
-            // fontWeight: FontWeight.bold,
             color: Colors.grey,
           ),
         ),

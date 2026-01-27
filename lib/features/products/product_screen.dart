@@ -4,6 +4,7 @@ import 'package:vending/features/orders/widgets/order_bottom_bar.dart';
 import 'package:vending/features/products/widgets/product_app_bar.dart';
 import 'package:vending/features/products/widgets/product_card.dart';
 import '../../core/styles/colors.dart';
+import '../orders/order_screen.dart';
 import 'product_provider.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -49,12 +50,12 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
       bottomNavigationBar: OrderBottomBar(
         onCheckout: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (_) => const CheckoutScreen(),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const OrderScreen(),
+            ),
+          );
         },
       ),
     );

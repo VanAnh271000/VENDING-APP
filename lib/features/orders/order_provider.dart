@@ -1,36 +1,40 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../products/product_model.dart';
+import 'order_item_model.dart';
 
 class OrderProvider extends ChangeNotifier {
-  final Map<int, int> _items = {};
-  final Map<int, int> _prices = {};
-  int getQuantity(int productId) => _items[productId] ?? 0;
+  final Map<int, OrderItem> _items = {};
+  Map<int, OrderItem> get items => _items;
 
-  void add(int productId, int price) {
-    _items[productId] = (_items[productId] ?? 0) + 1;
-    _prices[productId] = price;
-    notifyListeners();
-  }
-
-  void remove(int productId) {
-    final current = getQuantity(productId);
-    if (current <= 1) {
-      _items.remove(productId);
-      _prices.remove(productId);
+  void add(Product product) {
+    if (_items.containsKey(product.id)) {
+      _items[product.id]!.quantity++;
     } else {
-      _items[productId] = current - 1;
+      _items[product.id] = OrderItem(product: product);
     }
     notifyListeners();
   }
 
-  int get totalItems => _items.values.fold(0, (sum, qty) => sum + qty);
+  void remove(Product product) {
+    if (!_items.containsKey(product.id)) return;
 
-  int get totalPrice {
-    int total = 0;
-    _items.forEach((id, qty){
-      total += qty* (_prices[id] ?? 0);
-    });
-    return total;
+    if (_items[product.id]!.quantity > 1) {
+      _items[product.id]!.quantity--;
+    } else {
+      _items.remove(product.id);
+    }
+    notifyListeners();
   }
+
+  int getQuantity(int productId) =>
+      _items[productId]?.quantity ?? 0;
+
+  double get totalPrice =>
+      _items.values.fold(0, (sum, e) => sum + e.totalPrice);
+
+  int get totalItems =>
+      _items.values.fold(0, (sum, e) => sum + e.quantity);
 
   bool get hasItems => _items.isNotEmpty;
 }

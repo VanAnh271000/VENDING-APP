@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vending/core/styles/colors.dart';
+import 'package:vending/features/orders/order_item_model.dart';
 import '../../../core/utils/formatter.dart';
 import '../../orders/order_provider.dart';
-import '../product_model.dart';
 import 'package:provider/provider.dart';
 
-class ProductCard extends StatelessWidget {
-  final Product product;
+class OrderItemCard extends StatelessWidget {
+  final OrderItem item;
   final VoidCallback? onTap;
-  const ProductCard({super.key, required this.product, this.onTap});
+  const OrderItemCard({super.key, required this.item, this.onTap});
 
-  static const double itemHeight = 100;
+  static const double itemHeight = 80;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class ProductCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: AspectRatio(
         aspectRatio: 1,
-        child: Image.network(product.imageUrl, fit: BoxFit.cover),
+        child: Image.network(item.product.imageUrl, fit: BoxFit.cover),
       ),
     );
   }
@@ -53,21 +53,14 @@ class ProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            product.name,
+            item.product.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(color: AppColors.textPrimary),
           ),
           const SizedBox(height: 4),
           Text(
-            product.description,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: AppColors.textSecondary),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            formatCurrency(product.price),
+            '${formatCurrency(item.product.price)} x ${item.quantity}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(color: AppColors.textSecondary),
@@ -79,17 +72,7 @@ class ProductCard extends StatelessWidget {
 
   Widget _buildAction(BuildContext context) {
     final order = context.watch<OrderProvider>();
-    final qty = order.getQuantity(product.id);
-
-    if (qty == 0) {
-      return IconButton(
-        icon: const Icon(Icons.add_circle),
-        color: AppColors.iconPrimary,
-        onPressed: () {
-          context.read<OrderProvider>().add(product);
-        },
-      );
-    }
+    final qty = order.getQuantity(item.product.id);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -97,12 +80,18 @@ class ProductCard extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              icon: const Icon(Icons.remove_circle_outline),
+              constraints: const BoxConstraints(
+                minWidth: 24,
+                minHeight: 24,
+              ),
+              padding: EdgeInsets.zero,
+              icon: const Icon(Icons.remove_circle_outline, size: 18),
               color: AppColors.iconPrimary,
               onPressed: () {
-                context.read<OrderProvider>().remove(product);
+                context.read<OrderProvider>().remove(item.product);
               },
             ),
+            const SizedBox(width: 4,),
             Text(
               qty.toString(),
               style: const TextStyle(
@@ -111,19 +100,25 @@ class ProductCard extends StatelessWidget {
                 color: AppColors.iconPrimary,
               ),
             ),
+            const SizedBox(width: 4,),
             IconButton(
-              icon: const Icon(Icons.add_circle_outline),
+              constraints: const BoxConstraints(
+                minWidth: 24,
+                minHeight: 24,
+              ),
+              padding: EdgeInsets.zero,
+              icon: const Icon(Icons.add_circle_outline, size: 18),
               color: AppColors.iconPrimary,
               onPressed: () {
-                context.read<OrderProvider>().add(product);
+                context.read<OrderProvider>().add(item.product);
               },
             ),
           ],
         ),
         Text(
-          formatCurrency(qty*product.price),
+          formatCurrency(qty*item.product.price),
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 12,
             color: Colors.grey,
           ),
         ),

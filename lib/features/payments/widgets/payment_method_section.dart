@@ -54,7 +54,7 @@ class PaymentMethodSection extends StatelessWidget {
               ),
             ),
           );
-        }).toList(),
+        }),
       ],
     );
 

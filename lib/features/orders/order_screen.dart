@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:vending/features/orders/widgets/order_bottom_bar.dart';
 import 'package:vending/features/orders/widgets/order_item_card.dart';
 import '../../core/styles/colors.dart';
+import '../payments/payment_provider.dart';
 import '../payments/widgets/payment_method_section.dart';
 import '../payments/payment_screen.dart';
 import 'order_provider.dart';
@@ -76,9 +77,24 @@ class OrderScreen extends StatelessWidget {
       ),
       bottomNavigationBar: OrderBottomBar(
         onCheckout: () {
+          final payment = context.read<PaymentProvider>();
+          final order = context.read<OrderProvider>();
+
+          if (payment.selected == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Vui lòng chọn phương thức thanh toán')),
+            );
+            return;
+          }
+
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => PaymentScreen()),
+            MaterialPageRoute(
+              builder: (_) => PaymentScreen(
+                method: payment.selected!,
+                items: order.items.values.toList(),
+              ),
+            ),
           );
         },
       ),
